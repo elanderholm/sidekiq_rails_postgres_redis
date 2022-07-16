@@ -9,6 +9,3 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_HOST: db
 
-volumes:
-  postgres-data: {}
-  redis: {}
