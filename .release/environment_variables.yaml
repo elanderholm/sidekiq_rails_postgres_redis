@@ -27,12 +27,6 @@ gitops:
   immutable_keys:
    - CUSTOMER_NAME
 defaults:
-- key: POSTGRES_USER
-  value: postgres
-- key: POSTGRES_PASSWORD
-  value: postgres
-services:
-  api:
   - key: REDIS_URL
     value: redis://redis:6379/0
   - key: POSTGRES_HOST
@@ -41,32 +35,3 @@ services:
     value: postgres
   - key: POSTGRES_PASSWORD
     value: postgres
-  sidekiq:
-  - key: REDIS_URL
-    value: redis://redis:6379/0
-  - key: POSTGRES_HOST
-    value: db
-  - key: POSTGRES_USER
-    value: postgres
-  - key: POSTGRES_PASSWORD
-    value: postgres
-  db:
-  - key: PGDATA
-    value: "/var/lib/postgresql/data/pgdata"
-  - key: POSTGRES_USER
-    value: postgres
-  - key: POSTGRES_PASSWORD
-    value: postgres
-  redis:
-  - key: REDIS_TEST_1
-    value: redis
-  - key: REDIS_TEST_2
-    value: rediss
-  - key: REDIS_TEST_3
-    value: redisss
-  - key: REDIS_TEST_4
-    value: redissss
-  - key: REDIS_TEST_5
-    value: redi5s
-  - key: REDIS_TEST_6
-    value: redi6s
