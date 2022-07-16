@@ -3,7 +3,7 @@ app: sidekiq-rails-postgres-redis
 tracking_branch: foo
 auto_deploy: true
 context: release-customer-us-west-2
-domain: sidekiq-rails-postgres-redis.rls.sh.sh
+domain: sidekiq-rails-postgres-redis.rls.sh
 mode: development
 repo_name: elanderholm/sidekiq_rails_postgres_redis
 hostnames:
