@@ -1,0 +1,93 @@
+---
+app: rails-postgres-redis
+tracking_branch: foo
+auto_deploy: true
+context: release-customer-us-west-2
+domain: rails-postgres-redis.rls.sh.sh
+mode: development
+repo_name: elanderholm/rails_postgres_redis
+hostnames:
+- api: api-${env_id}-${domain}
+environment_templates:
+- name: ephemeral
+- name: permanent
+resources:
+  cpu:
+    limits: 1000m
+    requests: 100m
+  memory:
+    limits: 1200Mi
+    requests: 120Mi
+  replicas: 1
+services:
+- name: api
+  image: elanderholm/rails_postgres_redis/api
+  build:
+    context: "."
+  has_repo: true
+  static: false
+  args:
+  - bash
+  - "-c"
+  - "(rake db:exists && rake db:migrate || rake db:setup) && bundle exec rails s -b
+    0.0.0.0"
+  depends_on:
+  - db
+  - redis
+  ports:
+  - type: node_port
+    target_port: '3000'
+    port: '3000'
+- name: sidekiq
+  image: elanderholm/rails_postgres_redis/api
+  has_repo: true
+  args:
+  - bundle
+  - exec
+  - sidekiq
+  depends_on:
+  - api
+  - redis
+  - db
+- name: db
+  image: postgres:12-alpine
+  volumes:
+  - type: persistent
+    name: postgres-data
+    mount_path: "/var/lib/postgresql/data"
+  ports:
+  - type: container_port
+    port: '5432'
+  storage:
+    size: 10Gi
+    type: aws-efs
+- name: redis
+  image: redis
+  volumes:
+  - type: persistent
+    name: redis
+    mount_path: "/data"
+  ports:
+  - type: container_port
+    port: '6379'
+  storage:
+    size: 10Gi
+    type: aws-efs
+workflows:
+- name: setup
+  parallelize:
+  - step: databases
+    tasks:
+    - services.redis
+    - services.db
+  - step: mystuff
+    tasks:
+    - services.api
+    - services.sidekiq
+- name: patch
+  parallelize:
+  - step: mystuff
+    tasks:
+    - services.api
+    - services.sidekiq
+

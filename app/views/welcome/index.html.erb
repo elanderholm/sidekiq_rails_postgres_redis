@@ -1,0 +1,8 @@
+<% test_flag = Rails.configuration.ld_client.variation("test-flag", {key: "user@test.com"}, false) %>
+<% if test_flag %>
+  <h1>TEST-FLAG is true : Welcome To Rails on Release</h1>
+  <p>Rails in running in <%= Rails.env %> mode</p>
+<% else %>
+  <h1>TEST-FLAG is false : Welcome To Rails on Release</h1>
+  <p>Rails in running in <%= Rails.env %> mode</p>
+<% end %>

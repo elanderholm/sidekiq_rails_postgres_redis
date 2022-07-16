@@ -1,0 +1,72 @@
+---
+# Any ENVS present in the defaults section will be available to every container
+# ENVS defined under particular services will apply only to those services and override
+# any envs in the defaults with the same key.
+
+# Release has created (7) Environment Variables:
+# * RELEASE_ENV_ID
+# * RELEASE_COMMIT_SHORT
+# * RELEASE_ENV
+# * RELEASE_COMMIT_SHA
+# * RELEASE_ACCOUNT_ID
+# * API_INGRESS_URL
+# * API_INGRESS_HOST
+
+## ENV MAPPING ##
+# Documentation: https://docs.releasehub.com/reference-guide/reference-examples/environment-variable-mappings
+# You can map the Release generated ENVs to your own ENVS by uncommenting the lines below.
+#mapping:
+#  YOUR_ENV: RELEASE_ENV_ID
+#  YOUR_ENV: RELEASE_COMMIT_SHORT
+#  YOUR_ENV: RELEASE_ENV
+#  YOUR_ENV: RELEASE_COMMIT_SHA
+#  YOUR_ENV: RELEASE_ACCOUNT_ID
+#  YOUR_ENV: API_INGRESS_URL
+#  YOUR_ENV: API_INGRESS_HOST
+gitops:
+  immutable_keys:
+   - CUSTOMER_NAME
+defaults:
+- key: POSTGRES_USER
+  value: postgres
+- key: POSTGRES_PASSWORD
+  value: postgres
+services:
+  api:
+  - key: REDIS_URL
+    value: redis://redis:6379/0
+  - key: POSTGRES_HOST
+    value: db
+  - key: POSTGRES_USER
+    value: postgres
+  - key: POSTGRES_PASSWORD
+    value: postgres
+  sidekiq:
+  - key: REDIS_URL
+    value: redis://redis:6379/0
+  - key: POSTGRES_HOST
+    value: db
+  - key: POSTGRES_USER
+    value: postgres
+  - key: POSTGRES_PASSWORD
+    value: postgres
+  db:
+  - key: PGDATA
+    value: "/var/lib/postgresql/data/pgdata"
+  - key: POSTGRES_USER
+    value: postgres
+  - key: POSTGRES_PASSWORD
+    value: postgres
+  redis:
+  - key: REDIS_TEST_1
+    value: redis
+  - key: REDIS_TEST_2
+    value: rediss
+  - key: REDIS_TEST_3
+    value: redisss
+  - key: REDIS_TEST_4
+    value: redissss
+  - key: REDIS_TEST_5
+    value: redi5s
+  - key: REDIS_TEST_6
+    value: redi6s
